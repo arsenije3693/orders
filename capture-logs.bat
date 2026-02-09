@@ -1,0 +1,3 @@
+@echo off
+echo Capturing logs to error.log...
+mvnw.cmd spring-boot:run > error.log 2>&1

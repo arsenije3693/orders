@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure MySQL Orders</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; margin-bottom: 10px; }
+        .status { color: #28a745; font-size: 14px; margin-bottom: 20px; }
+        .btn { display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
+        .btn:hover { background: #0056b3; }
+        .btn-danger { background: #dc3545; }
+        .btn-danger:hover { background: #c82333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; font-weight: bold; }
+        tr:hover { background: #f8f9fa; }
+        .empty { text-align: center; padding: 40px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 Order Management System</h1>
+        <p class="status">✅ Connected to Azure MySQL Database</p>
+        
+        <a href="/orders/new" class="btn">+ Add New Order</a>
+        
+        <table th:if="${!orders.isEmpty()}">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.product}"></td>
+                    <td th:text="${order.quantity}"></td>
+                    <td th:text="'$' + ${order.price}"></td>
+                    <td th:text="'$' + ${order.quantity * order.price}"></td>
+                    <td>
+                        <a th:href="@{/orders/delete/{id}(id=${order.id})}" class="btn btn-danger" 
+                           onclick="return confirm('Delete this order?')">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="empty" th:if="${orders.isEmpty()}">
+            <p>No orders yet. Click "Add New Order" to create one.</p>
+        </div>
+    </div>
+</body>
+</html>
